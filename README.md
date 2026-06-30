@@ -35,30 +35,47 @@ It identifies at-risk customers *before* they leave, explains *why* in plain bus
 
 ---
 
+## 📊 Key Findings
+
+Exploratory analysis on 7,043 customers revealed clear churn drivers:
+
+| Driver | Finding |
+|---|---|
+| **Contract type** | Month-to-month customers churn at **42.7%** vs just **2.8%** for two-year contracts |
+| **Tenure** | New customers (0–12 months) churn at **47.7%** — the first year is the highest-risk window |
+| **Pricing** | Churned customers pay **₹13 more per month** on average than retained customers |
+| **Top model signal** | Contract type and tenure are the two strongest predictors — far more than demographics |
+
+**The business takeaway:** churn is driven almost entirely by contract structure and pricing, not who the customer is. Retention strategy should focus on converting month-to-month customers to longer contracts, especially within the first year.
+
+---
+
+## 🧠 Model Performance
+
+- **Algorithm:** Random Forest Classifier (balanced for class imbalance)
+- **ROC-AUC:** 0.838
+- **Recall on churned customers:** 68% — correctly catches most at-risk customers
+- **Precision on churned customers:** 55% — acceptable tradeoff, since the cost of a false alarm is low compared to losing a real customer
+
+---
+
 ## 🗂️ Project Structure
 
 ```
 ChurnLens/
 │
 ├── data/
-│   ├── raw/                  # Original dataset (Telco Customer Churn)
-│   └── processed/            # Cleaned, feature-engineered data
+│   └── raw/                       # Original dataset (Telco Customer Churn)
 │
 ├── notebooks/
-│   ├── 01_eda.ipynb          # Exploratory Data Analysis
-│   ├── 02_preprocessing.ipynb
-│   └── 03_model_training.ipynb
+│   └── churn_analysis.ipynb       # Full EDA, cleaning, and model training
 │
-├── model/
-│   └── churn_model.pkl       # Trained ML model
+├── churn_model.pkl                # Trained ML model
+├── label_encoders.pkl             # Encoders for categorical features
+├── telco_churn_cleaned.csv        # Cleaned dataset, ready for Power BI
 │
 ├── dashboard/
-│   └── ChurnLens.pbix        # Power BI dashboard file
-│
-├── src/
-│   ├── preprocess.py
-│   ├── predict.py
-│   └── utils.py
+│   └── ChurnLens.pbix             # Power BI dashboard file
 │
 ├── reports/
 │   └── ChurnLens_BusinessReport.pdf   # Summary for non-tech stakeholders
@@ -75,7 +92,7 @@ ChurnLens/
 
 - 7,043 customer records
 - 21 features: contract type, tenure, monthly charges, support tickets, and more
-- Real-world churn rate of ~26.5% — making it highly representative of business scenarios
+- Real-world churn rate of **26.5%** — highly representative of business scenarios
 
 ---
 
@@ -83,18 +100,19 @@ ChurnLens/
 
 | Step | Method |
 |---|---|
-| Feature Engineering | Tenure buckets, charge-per-month ratios, support interaction scores |
-| Model | Random Forest Classifier (baseline) + XGBoost (optimized) |
-| Evaluation | F1-Score, ROC-AUC, Precision-Recall curve |
-| Explainability | SHAP values — so the model explains *why* a customer is high-risk |
+| Data Cleaning | Handled missing `TotalCharges` values (new customers with 0 tenure) |
+| Feature Engineering | Tenure buckets, categorical encoding for all customer attributes |
+| Model | Random Forest Classifier, balanced for the 26.5% churn class imbalance |
+| Evaluation | Precision, recall, F1-score, ROC-AUC |
+| Feature Importance | Identified contract type and tenure as the dominant churn drivers |
 
 ---
 
 ## 📈 Dashboard Preview
 
-> *Screenshots coming soon — dashboard in progress*
+> *Power BI dashboard in progress — screenshots coming soon*
 
-The Power BI dashboard includes:
+The dashboard will include:
 - 🔴 High / 🟡 Medium / 🟢 Low churn risk segments
 - Churn drivers ranked by impact (contract type, tenure, support calls)
 - Month-over-month at-risk customer trend
@@ -123,41 +141,46 @@ cd ChurnLens
 # Install dependencies
 pip install -r requirements.txt
 
-# Run preprocessing
-python src/preprocess.py
-
-# Run prediction
-python src/predict.py
+# Open the notebook to see the full analysis
+jupyter notebook notebooks/churn_analysis.ipynb
 ```
 
-Open `dashboard/ChurnLens.pbix` in Power BI Desktop to explore the dashboard.
+Open `dashboard/ChurnLens.pbix` in Power BI Desktop to explore the dashboard once built.
 
 ---
 
 ## 🛣️ Roadmap
 
 - [x] Project structure & documentation
-- [x] Dataset sourced and documented
-- [ ] EDA notebook
-- [ ] Preprocessing pipeline
-- [ ] Model training & evaluation
-- [ ] SHAP explainability layer
+- [x] Dataset sourced and cleaned
+- [x] EDA — identified key churn drivers
+- [x] Model training & evaluation (ROC-AUC: 0.838)
 - [ ] Power BI dashboard (v1)
 - [ ] Business report PDF
+- [ ] SHAP explainability layer
 - [ ] Deploy model as REST API
+
+---
+
+## 🛠️ Tech Stack
+
+**Analysis:** Python, pandas, scikit-learn
+**Modeling:** Random Forest Classifier
+**Visualization:** Power BI
+**Dev environment:** Google Colab
 
 ---
 
 ## 👩‍💻 About the Author
 
-**Anupriya T.V** — B.Tech Computer Science & Data Science, Presidency University Bengaluru  
+**Anu** — B.Tech Computer Science & Data Science, Presidency University Bengaluru
 CSI Chapter President | IEEE Student Coordinator | BEL Process Automation Intern
 
 Passionate about translating data into decisions that non-technical teams can actually use.
 
-[![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat-square&logo=github)](https://github.com/yourusername)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0a66c2?style=flat-square&logo=linkedin)](https://linkedin.com/in/yourprofile)
+[![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat-square&logo=github)](https://github.com/anupriya-tv)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0a66c2?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/anupriya-t-v/)
 
 ---
 
-*Built with Python · Power BI · scikit-learn · SHAP · Pandas*
+*Built with Python · Power BI · scikit-learn · Pandas*
