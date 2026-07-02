@@ -1,174 +1,178 @@
 # 🔍 ChurnLens
 ### *Turning Customer Loss into Business Strategy*
-
+ 
 > A business intelligence tool that predicts customer churn risk and translates raw data into decisions a non-technical team can actually act on.
-
-![Status](https://img.shields.io/badge/Status-In_Development-f59e0b?style=flat-square)
+ 
+![Status](https://img.shields.io/badge/Status-Complete-22c55e?style=flat-square)
 ![Python](https://img.shields.io/badge/Python-3.10+-3b82f6?style=flat-square&logo=python&logoColor=white)
 ![Power BI](https://img.shields.io/badge/Power_BI-Dashboard-f2c811?style=flat-square&logo=powerbi&logoColor=black)
+![sklearn](https://img.shields.io/badge/scikit--learn-ML-f97316?style=flat-square&logo=scikit-learn&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-10b981?style=flat-square)
-
+ 
 ---
-
+ 
 ## 🧩 The Business Problem
-
+ 
 Every company loses customers. Most don't know *which* customers are about to leave — until it's too late.
-
+ 
 Customer acquisition costs **5x more** than retention. Yet most analytics tools built for churn prediction require a data science team to interpret them. Business managers end up with a black-box model and no clear next step.
-
+ 
 **ChurnLens bridges that gap.**
-
-It identifies at-risk customers *before* they leave, explains *why* in plain business language, and recommends *what to do about it* — all through a dashboard a non-technical manager can open on Monday morning.
-
+ 
+It identifies at-risk customers *before* they leave, explains *why* in plain business language, and surfaces those insights through a dashboard any non-technical manager can open on Monday morning.
+ 
 ---
-
+ 
+## 📊 Dashboard Preview
+ 
+![ChurnLens Dashboard](dashboard_preview.png)
+ 
+---
+ 
 ## ✨ What It Does
-
+ 
 | Feature | Description |
 |---|---|
-| 📥 **Data Ingestion** | Accepts customer datasets (CSV/Excel) with usage, billing, and support data |
-| 🧹 **Auto Cleaning** | Handles missing values, outliers, and inconsistent formats automatically |
-| 🤖 **Churn Prediction** | ML model flags customers by risk level — High / Medium / Low |
-| 📊 **BI Dashboard** | Interactive Power BI dashboard with filters by segment, region, and plan |
-| 💡 **Action Cards** | Each high-risk customer gets a plain-English reason + recommended retention action |
-| 📤 **Export Ready** | Download filtered churn reports as CSV for CRM or ops team handoff |
-
+| 🧹 **Data Cleaning** | Handles missing values and type inconsistencies automatically |
+| 🔍 **Exploratory Analysis** | Identifies key churn drivers across contract type, tenure, pricing, and services |
+| 🤖 **Churn Prediction** | Random Forest model flags at-risk customers with 83.8% ROC-AUC |
+| 📊 **Power BI Dashboard** | 6 interactive visuals showing churn patterns across every key dimension |
+| 💡 **Business Insights** | Plain-English findings any ops or retention team can act on immediately |
+ 
 ---
-
-## 📊 Key Findings
-
-Exploratory analysis on 7,043 customers revealed clear churn drivers:
-
-| Driver | Finding |
-|---|---|
-| **Contract type** | Month-to-month customers churn at **42.7%** vs just **2.8%** for two-year contracts |
-| **Tenure** | New customers (0–12 months) churn at **47.7%** — the first year is the highest-risk window |
-| **Pricing** | Churned customers pay **₹13 more per month** on average than retained customers |
-| **Top model signal** | Contract type and tenure are the two strongest predictors — far more than demographics |
-
-**The business takeaway:** churn is driven almost entirely by contract structure and pricing, not who the customer is. Retention strategy should focus on converting month-to-month customers to longer contracts, especially within the first year.
-
+ 
+## 🔑 Key Findings
+ 
+| Insight | Finding | Business Action |
+|---|---|---|
+| **Contract type** | Month-to-month customers churn at **42.7%** vs **2.8%** for two-year contracts | Incentivize customers to upgrade to annual/biannual contracts |
+| **Tenure** | Customers in their first year churn at **47.7%** | Focus retention efforts in the first 12 months |
+| **Pricing** | Churned customers pay **$13 more/month** on average | Review pricing tiers for value perception |
+| **Internet service** | Fiber optic customers churn significantly more despite higher spend | Investigate service quality or value perception for fiber users |
+| **Payment method** | Electronic check users churn far more than automatic payment users | Encourage customers to switch to automatic payments |
+ 
+> **The headline:** Churn is driven almost entirely by contract structure and pricing — not demographics. Retention strategy should focus on converting month-to-month customers to longer contracts, especially in year one.
+ 
 ---
-
+ 
 ## 🧠 Model Performance
-
-- **Algorithm:** Random Forest Classifier (balanced for class imbalance)
-- **ROC-AUC:** 0.838
-- **Recall on churned customers:** 68% — correctly catches most at-risk customers
-- **Precision on churned customers:** 55% — acceptable tradeoff, since the cost of a false alarm is low compared to losing a real customer
-
+ 
+| Metric | Score |
+|---|---|
+| ROC-AUC | **0.838** |
+| Recall (Churned customers) | **68%** — catches most at-risk customers |
+| Precision (Churned customers) | **55%** — acceptable tradeoff given low cost of false alarms |
+| Overall Accuracy | **77%** |
+ 
+**Top predictive features:**
+1. Contract type (16.6%)
+2. Tenure (15%)
+3. Total charges (13.4%)
+4. Monthly charges (12.6%)
+5. Online security subscription (8.4%)
 ---
-
+ 
+## 📊 Dashboard Visuals
+ 
+| Visual | Insight |
+|---|---|
+| 🍩 Churn rate donut | 26.54% overall churn rate across 7,043 customers |
+| 📊 Churn by Contract | Month-to-month dominates churn vs one/two-year contracts |
+| 📊 Churn by Tenure Group | First-year customers show highest churn risk |
+| 📊 Average Monthly Charges | Churned customers pay ~$13 more per month |
+| 📊 Churn by Internet Service | Fiber optic users churn at the highest rate |
+| 📊 Churn by Payment Method | Electronic check users show significantly higher churn |
+ 
+---
+ 
 ## 🗂️ Project Structure
-
+ 
 ```
 ChurnLens/
-│
-├── data/
-│   └── raw/                       # Original dataset (Telco Customer Churn)
 │
 ├── notebooks/
 │   └── churn_analysis.ipynb       # Full EDA, cleaning, and model training
 │
-├── churn_model.pkl                # Trained ML model
+├── churn_model.pkl                # Trained Random Forest model
 ├── label_encoders.pkl             # Encoders for categorical features
 ├── telco_churn_cleaned.csv        # Cleaned dataset, ready for Power BI
-│
-├── dashboard/
-│   └── ChurnLens.pbix             # Power BI dashboard file
-│
-├── reports/
-│   └── ChurnLens_BusinessReport.pdf   # Summary for non-tech stakeholders
+├── dashboard_preview.png          # Power BI dashboard screenshot
 │
 ├── requirements.txt
 └── README.md
 ```
-
+ 
 ---
-
+ 
 ## 📊 Dataset
-
+ 
 **Source:** [Telco Customer Churn — IBM Sample Dataset](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
-
-- 7,043 customer records
-- 21 features: contract type, tenure, monthly charges, support tickets, and more
+ 
+- **7,043** customer records
+- **21 features** — contract type, tenure, monthly charges, internet service, payment method, and more
 - Real-world churn rate of **26.5%** — highly representative of business scenarios
-
 ---
-
+ 
 ## 🧠 ML Approach
-
-| Step | Method |
+ 
+| Step | Detail |
 |---|---|
-| Data Cleaning | Handled missing `TotalCharges` values (new customers with 0 tenure) |
-| Feature Engineering | Tenure buckets, categorical encoding for all customer attributes |
-| Model | Random Forest Classifier, balanced for the 26.5% churn class imbalance |
-| Evaluation | Precision, recall, F1-score, ROC-AUC |
-| Feature Importance | Identified contract type and tenure as the dominant churn drivers |
-
+| **Data Cleaning** | Fixed `TotalCharges` type issue (11 blank rows = new customers with 0 tenure, filled with 0) |
+| **Encoding** | Label encoded all categorical features for model compatibility |
+| **Train/Test Split** | 80/20 split, stratified to preserve churn ratio |
+| **Model** | Random Forest Classifier with `class_weight='balanced'` to handle class imbalance |
+| **Evaluation** | Precision, Recall, F1-Score, ROC-AUC |
+| **Feature Importance** | Identified contract type and tenure as dominant churn predictors |
+ 
 ---
-
-## 📈 Dashboard Preview
-
-> *Power BI dashboard in progress — screenshots coming soon*
-
-The dashboard will include:
-- 🔴 High / 🟡 Medium / 🟢 Low churn risk segments
-- Churn drivers ranked by impact (contract type, tenure, support calls)
-- Month-over-month at-risk customer trend
-- One-click export of high-risk customer list for retention teams
-
----
-
-## 💼 Business Impact
-
-This project simulates a real-world BA deliverable — not just a model, but a **decision support system**:
-
-- Retention teams get a prioritized call list every week
-- Product teams see which features correlate with long-term loyalty
-- Finance teams can model revenue saved from proactive retention campaigns
-- All without needing to open a single Jupyter notebook
-
----
-
+ 
 ## 🚀 Getting Started
-
+ 
 ```bash
 # Clone the repo
 git clone https://github.com/yourusername/ChurnLens.git
 cd ChurnLens
-
+ 
 # Install dependencies
 pip install -r requirements.txt
-
-# Open the notebook to see the full analysis
+ 
+# Open the notebook
 jupyter notebook notebooks/churn_analysis.ipynb
 ```
-
-Open `dashboard/ChurnLens.pbix` in Power BI Desktop to explore the dashboard once built.
-
+ 
+To explore the dashboard, open `telco_churn_cleaned.csv` in Power BI Service at [app.powerbi.com](https://app.powerbi.com).
+ 
 ---
-
+ 
 ## 🛣️ Roadmap
-
-- [x] Project structure & documentation
-- [x] Dataset sourced and cleaned
-- [x] EDA — identified key churn drivers
-- [x] Model training & evaluation (ROC-AUC: 0.838)
-- [ ] Power BI dashboard (v1)
-- [ ] Business report PDF
+ 
+- [x] Dataset sourced and documented
+- [x] Data cleaning and preprocessing
+- [x] Exploratory data analysis
+- [x] Model training and evaluation (ROC-AUC: 0.838)
+- [x] Feature importance analysis
+- [x] Power BI dashboard (6 visuals)
 - [ ] SHAP explainability layer
+- [ ] Business report PDF for non-technical stakeholders
 - [ ] Deploy model as REST API
-
 ---
-
+ 
 ## 🛠️ Tech Stack
-
-**Analysis:** Python, pandas, scikit-learn
-**Modeling:** Random Forest Classifier
-**Visualization:** Power BI
-**Dev environment:** Google Colab
-
+ 
+**Analysis & Modeling:** Python, pandas, scikit-learn, matplotlib
+**Dashboard:** Power BI Service
+**Dev Environment:** Google Colab
+ 
+---
+ 
+## 💼 Business Impact
+ 
+ChurnLens simulates a real-world BA/Data Analyst deliverable — not just a model, but a complete **decision support system**:
+ 
+- Retention teams get clear, prioritized signals on which customer segments to focus on
+- Product teams see which services correlate with long-term loyalty
+- Finance teams can model revenue saved through proactive retention campaigns
+- All without needing to open a single line of code
 ---
 
 ## 👩‍💻 About the Author
